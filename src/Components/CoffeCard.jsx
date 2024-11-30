@@ -1,11 +1,11 @@
-import React, { useState } from "react";
 import { FaRegEye } from "react-icons/fa6";
 import { MdEdit } from "react-icons/md";
 import { FaTrash } from "react-icons/fa";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import "sweetalert2/src/sweetalert2.scss";
-const CoffeCard = ({ coffee }) => {
-  const { name, chef, price, photo } = coffee;
+import { Link } from "react-router-dom";
+const CoffeCard = ({ coffee, coffees, setCoffees }) => {
+  const { _id, name, chef, price, photo } = coffee;
 
   const handleDelete = (id) => {
     Swal.fire({
@@ -28,6 +28,8 @@ const CoffeCard = ({ coffee }) => {
                 text: "Your file has been deleted.",
                 icon: "success",
               });
+              const remaining = coffees.filter((coffee) => coffee._id !== _id);
+              setCoffees(remaining);
             }
           });
       }
@@ -35,10 +37,10 @@ const CoffeCard = ({ coffee }) => {
   };
 
   return (
-    <div className="font-roboto bg-[#f5f4f1] p-8 flex flex-col lg:flex-row items-center justify-between gap-5 lg:gap-0">
-      <div className="flex flex-col lg:flex-row items-center">
-        <figure className="w-44 h-44">
-          <img className="w-full h-full object-cover" src={photo} alt="" />
+    <div className="font-roboto bg-[#f5f4f1] p-8 flex flex-col lg:flex-row items-center justify-between   ">
+      <div className="flex flex-col lg:flex-row items-center gap-3 lg:gap-0">
+        <figure className="w-44 h-48">
+          <img className="w-full h-full object-fill" src={photo} alt="" />
         </figure>
         <div className="space-y-2">
           <p>
@@ -56,11 +58,11 @@ const CoffeCard = ({ coffee }) => {
         <button className="btn btn-xs bg-[#d2b48c]">
           <FaRegEye className="text-white" />
         </button>
-        <button className="btn btn-xs bg-gray-700 ">
+        <Link to={`/update-info/${_id}`} className="btn btn-xs bg-gray-700 ">
           <MdEdit className="text-white" />
-        </button>
+        </Link>
         <button
-          onClick={() => handleDelete(coffee._id)}
+          onClick={() => handleDelete(_id)}
           className="btn btn-xs bg-red-500"
         >
           <FaTrash className="text-white" />

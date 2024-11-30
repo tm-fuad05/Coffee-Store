@@ -18,8 +18,10 @@ const router = createBrowserRouter([
         element: <AddCoffe></AddCoffe>,
       },
       {
-        path: "update-info",
+        path: "update-info/:id",
         element: <Update></Update>,
+        loader: ({ params }) =>
+          fetch(`http://localhost:4000/coffee/${params.id}`),
       },
     ],
   },

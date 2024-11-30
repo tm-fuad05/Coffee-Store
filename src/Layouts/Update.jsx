@@ -1,8 +1,14 @@
 import React from "react";
 import { FaArrowLeft } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import { Link, useLoaderData, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2/dist/sweetalert2.js";
+import "sweetalert2/src/sweetalert2.scss";
 
 const Update = () => {
+  const navigate = useNavigate();
+  const singleCoffee = useLoaderData();
+  const { _id, name, chef, supplier, taste, category, details, price, photo } =
+    singleCoffee;
   const handleUpdate = (e) => {
     e.preventDefault();
 
@@ -13,23 +19,43 @@ const Update = () => {
     const taste = form.taste.value;
     const category = form.category.value;
     const details = form.details.value;
+    const price = form.price.value;
     const photo = form.photo.value;
 
-    const coffeInfo = { name, chef, supplier, taste, category, details, photo };
+    const coffeInfo = {
+      name,
+      chef,
+      supplier,
+      taste,
+      category,
+      details,
+      photo,
+      price,
+    };
     console.log(coffeInfo);
 
-    // fetch("", {
-    //   method: "PUT",
-    //   headers: {
-    //     "content-type": "application/json",
-    //   },
-    //   body: JSON.stringify(coffeInfo),
-    // })
-    //   .then((res) => res.json())
-    //   .then((data) => {
-    //     console.log(data);
-    //     form.reset();
-    //   });
+    fetch(`http://localhost:4000/coffee/${_id}`, {
+      method: "PUT",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(coffeInfo),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        form.reset();
+        Swal.fire({
+          title: "Success",
+          text: "Successfully updated coffee data",
+          icon: "success",
+          confirmButtonText: "OK",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            navigate("/");
+          }
+        });
+      });
   };
 
   return (
@@ -65,6 +91,7 @@ const Update = () => {
                 type="text"
                 placeholder="Enter coffe Name"
                 name="name"
+                defaultValue={name}
                 className="input input-bordered rounded-none border-none"
                 required
               />
@@ -77,6 +104,7 @@ const Update = () => {
                 type="text"
                 placeholder="Enter coffee chef"
                 name="chef"
+                defaultValue={chef}
                 className="input input-bordered rounded-none border-none"
                 required
               />
@@ -89,6 +117,7 @@ const Update = () => {
                 type="text"
                 placeholder="Enter coffee supplier"
                 name="supplier"
+                defaultValue={supplier}
                 className="input input-bordered rounded-none border-none"
                 required
               />
@@ -101,6 +130,7 @@ const Update = () => {
                 type="text"
                 placeholder="Enter coffee taste"
                 name="taste"
+                defaultValue={taste}
                 className="input input-bordered rounded-none border-none"
                 required
               />
@@ -112,6 +142,7 @@ const Update = () => {
               <input
                 type="text"
                 placeholder="Enter coffee category"
+                defaultValue={category}
                 name="category"
                 className="input input-bordered rounded-none border-none"
                 required
@@ -125,11 +156,25 @@ const Update = () => {
                 type="text"
                 placeholder="Enter coffee details"
                 name="details"
+                defaultValue={details}
                 className="input input-bordered rounded-none border-none"
                 required
               />
             </div>
-            <div className="form-control col-span-2">
+            <div className="form-control ">
+              <label className="label">
+                <span className="label-text">Price</span>
+              </label>
+              <input
+                type="text"
+                placeholder="Enter amount"
+                name="price"
+                defaultValue={price}
+                className="input input-bordered rounded-none border-none"
+                required
+              />
+            </div>
+            <div className="form-control ">
               <label className="label">
                 <span className="label-text">Photo</span>
               </label>
@@ -137,6 +182,7 @@ const Update = () => {
                 type="text"
                 placeholder="Enter photo URL"
                 name="photo"
+                defaultValue={photo}
                 className="input input-bordered rounded-none border-none"
                 required
               />

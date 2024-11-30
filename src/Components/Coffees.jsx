@@ -25,11 +25,19 @@ const Coffees = () => {
               Add Coffe <BsCup className="text-[#331a15]" />
             </button>
           </Link>
+          <h3 className="mt-10 text-2xl font-roboto font-semibold ">
+            Available Coffees: {coffees.length}
+          </h3>
         </div>
       </div>
-      <div className="grid grid-cols-2 gap-6 mt-10">
+      <div className="grid grid-cols-2 gap-6 mt-5">
         {coffees.map((coffee, idx) => (
-          <CoffeCard key={idx} coffee={coffee}></CoffeCard>
+          <CoffeCard
+            key={idx}
+            coffees={coffees}
+            setCoffees={setCoffees}
+            coffee={coffee}
+          ></CoffeCard>
         ))}
       </div>
     </div>
